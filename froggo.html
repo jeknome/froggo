@@ -1,0 +1,236 @@
+
+<!DOCTYPE html> <html> <head>
+<meta charset= "utf-8">
+<title> Kristen Cortez and Megan Murphy </title>
+<link rel="stylesheet" href="finalproject.css">
+
+<script>
+var xcar = 0; //x-coordinate of the car
+var ycar = 0; //y-coordinate of the car
+var xfrog = 0; //x-coordinate of the frog
+var yfrog = 0; //y-coordinate of the frog
+var xcone = 0; //x-coordinate of the cone
+var ycone = 0; //y-coordinate of the cone
+var totalscore = 0;
+
+var firstHitFlag = false;
+
+function start()
+{ 
+	totalscore = 0;
+	
+	movecone();
+	movefrog();	
+	
+	document.getElementById("total").innerHTML = "Total Score: " + totalscore;
+}
+
+function movecar(direction)
+{	
+	if (direction.keyCode == 39)
+	{	
+		xcar += 10;
+		document.getElementById("car").style.left = xcar + "px";
+	}
+	else if (direction.keyCode == 37)
+	{
+		xcar -= 10;
+		document.getElementById("car").style.left = xcar + "px";
+	}
+	else if (direction.keyCode == 38)
+	{	
+		ycar -= 10;
+		document.getElementById("car").style.top = ycar + "px";
+	}
+	else if (direction.keyCode == 40)
+	{	
+		ycar += 10;
+		document.getElementById("car").style.top = ycar + "px";
+	}
+	
+	checkCollision();
+
+
+// 	document.getElementById("total").innerHTML = "Total Score: " + totalscore 
+// 		+ " Car: (" + xcar + "," + ycar + ")"
+// 		+ " Frog: (" + xfrog + "," + yfrog + ")"
+// 		+ " Cone: (" + xcone + "," + ycone + ")";
+	
+}
+
+function movecone()
+{ 	
+	xcone = Math.floor(Math.random() * 750);
+	ycone = Math.floor(Math.random() * 400);
+	
+	document.getElementById('cone').style.left = xcone + "px";
+	document.getElementById('cone').style.top = ycone + "px";
+	setTimeout(function(){movecone();},4000);
+}
+
+function movefrog()
+{ 	
+	changeback();
+	
+	xfrog = Math.floor(Math.random() * 750);
+	yfrog = Math.floor(Math.random() * 400);
+	
+	document.getElementById('frog').style.left = xfrog + "px";
+	document.getElementById('frog').style.top = yfrog + "px";
+	setTimeout(function(){movefrog();},6000);
+}
+
+function checkCollision()
+{
+		
+	//Car hitting cone on the left
+	if((Math.abs((xcar+200) - xcone) < 10) && (Math.abs((ycar - ycone)) < 100))
+	{
+		if(firstHitFlag === false)
+		{
+			firstHitFlag = true;
+			totalscore -= 100;
+			document.getElementById("total").innerHTML = "Total Score: " + totalscore;
+		}
+		else
+		{
+			firstHitFlag = false;
+		}
+	}
+	//Car hitting cone on the right
+	else if((Math.abs(xcar - (xcone+100)) < 10) && (Math.abs((ycar - ycone)) < 100))
+	{
+		if(firstHitFlag === false)
+		{
+			firstHitFlag = true;
+			totalscore -= 100;
+			document.getElementById("total").innerHTML = "Total Score: " + totalscore;
+		}
+		else
+		{
+			firstHitFlag = false;
+		}
+	}
+	//Car hitting the cone on the top
+	else if ((Math.abs(xcar - xcone) < 100) && (Math.abs(((ycar+100)- ycone)) < 10))
+	{
+		if(firstHitFlag === false)
+		{
+			firstHitFlag = true;
+			totalscore -= 100;
+			document.getElementById("total").innerHTML = "Total Score: " + totalscore;
+		}
+		else
+		{
+			firstHitFlag = false;
+		}
+	}
+	//Car hitting the cone from the bottom
+	else if ((Math.abs(xcar - xcone) < 100) && (Math.abs(ycar - (ycone+100)) < 10))
+	{
+		if(firstHitFlag === false)
+		{
+			firstHitFlag = true;
+			totalscore -= 100;
+			document.getElementById("total").innerHTML = "Total Score: " + totalscore;
+		}
+		else
+		{
+			firstHitFlag = false;
+		}
+	}
+	
+	//Car hitting frog on the left
+	if((Math.abs((xcar+200) - xfrog) < 10) && (Math.abs(ycar - yfrog) < 100))
+	{
+		if(firstHitFlag === false)
+		{
+			firstHitFlag = true;
+			totalscore += 100;
+			document.getElementById("total").innerHTML = "Total Score: " + totalscore;
+			document.getElementById("frog").src="splat.jpg";
+			setTimeout(function(){changeback();},3000);
+		}
+		else
+		{
+			firstHitFlag = false;
+		}
+		
+	}
+	//Car hitting frog on the right
+	else if((Math.abs(xcar - (xfrog+50)) < 10) && (Math.abs(ycar - yfrog) < 100))
+	{
+		if(firstHitFlag === false)
+		{
+			firstHitFlag = true;
+			totalscore += 100;
+			document.getElementById("total").innerHTML = "Total Score: " + totalscore;
+			document.getElementById("frog").src="splat.jpg";
+			setTimeout(function(){changeback();},3000);
+		}
+		else
+		{
+			firstHitFlag = false;
+		}
+		setTimeout(function(){changeback();},3000);
+	}
+	//Car hitting the frog from the top
+	else if ((Math.abs(xcar - xfrog) < 200) && (Math.abs((ycar+100)- yfrog) < 10))
+	{
+		if(firstHitFlag === false)
+		{
+			firstHitFlag = true;
+			totalscore += 100;
+			document.getElementById("total").innerHTML = "Total Score: " + totalscore;
+			document.getElementById("frog").src="splat.jpg";
+			setTimeout(function(){changeback();},3000);
+		}
+		else
+		{
+			firstHitFlag = false;
+		}
+		setTimeout(function(){changeback();},3000);
+	}
+	//Car hitting the frog from the bottom
+	else if ((Math.abs(xcar - xfrog) < 200) && (Math.abs(ycar - (yfrog+50)) < 10))
+	{
+		if(firstHitFlag === false)
+		{
+			firstHitFlag = true;
+			totalscore += 100;
+			document.getElementById("total").innerHTML = "Total Score: " + totalscore;
+			document.getElementById("frog").src="splat.jpg";
+			setTimeout(function(){changeback();},3000);
+		}
+		else
+		{
+			firstHitFlag = false;
+		}
+		setTimeout(function(){changeback();},3000);
+	}
+
+}	
+	
+function changeback()
+{
+	document.getElementById("frog").src="frog.jpg";
+}	
+ 
+</script>
+</head>
+<body onkeypress = "movecar(event)"> 
+<div id = "header">
+	<h1> Splat the Frog </h1>
+	<p id = "total"> Total Score: </p>
+<input type = "button" value = "New Game" onClick = "start()">
+</div>
+
+<div id = "div1" style = "position: relative;">
+	<img src = "cone.png" width = "100" height = "100" id = "cone" style = "position: absolute;"> <br>
+	<img src = "frog.jpg" width = "50" height = "50" id = "frog" style = "position: absolute;"> <br>
+    <img src = "car.png" width = "200" height = "100" id = "car" style = "position: absolute;"> <br>
+   
+</div>    
+
+</body>
+</html>
